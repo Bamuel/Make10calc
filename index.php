@@ -19,7 +19,7 @@
     <input type="number" max="9" min="0" placeholder="2" name="b">
     <input type="number" max="9" min="0" placeholder="3" name="c">
     <input type="number" max="9" min="0" placeholder="4" name="d">
-    <!--<input type="number" value="10" name="value" disabled style="position: relative; top: 10px; left: 180px; max-width: 30px"><!-- for future-->-->
+    <!--<input type="number" value="10" name="value" disabled style="position: relative; top: 10px; left: 180px; max-width: 30px">  for future-->
     <br>
     <br>
     <input type="submit">
