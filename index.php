@@ -50,6 +50,7 @@ if (isset($_POST['submit'])) {
     if (!$foundSolution) {
         echo "There are no possible solutions";
     }
+    exit();
 }
 
 
@@ -193,36 +194,36 @@ function Calculate($ten, $a, $b, $c, $d): bool {
 
             //Brackets
             case $a * ($b + $c) - $d:
-                echo $a . "(" . $b . " + " . $c . ") - " . $d . " = " . $ten;
+                echo $a . " × (" . $b . " + " . $c . ") - " . $d . " = " . $ten;
                 $win = true;
                 break;
             case $a * ($b + $c) + $d:
-                echo $a . "(" . $b . " + " . $c . ") + " . $d . " = " . $ten;
+                echo $a . " × (" . $b . " + " . $c . ") + " . $d . " = " . $ten;
                 $win = true;
                 break;
             case $a * ($b - $c) + $d:
-                echo $a . "(" . $b . " - " . $c . ") + " . $d . " = " . $ten;
+                echo $a . " × (" . $b . " - " . $c . ") + " . $d . " = " . $ten;
                 $win = true;
                 break;
             case $a * ($b - $c) - $d:
-                echo $a . "(" . $b . " - " . $c . ") - " . $d . " = " . $ten;
+                echo $a . " × (" . $b . " - " . $c . ") - " . $d . " = " . $ten;
                 $win = true;
                 break;
             //2
             case $a * ($b + $c + $d):
-                echo $a . "(" . $b . " + " . $c . " + " . $d . ") = " . $ten;
+                echo $a . " × (" . $b . " + " . $c . " + " . $d . ") = " . $ten;
                 $win = true;
                 break;
             case $a * ($b + $c - $d):
-                echo $a . "(" . $b . " + " . $c . " - " . $d . ") = " . $ten;
+                echo $a . " × (" . $b . " + " . $c . " - " . $d . ") = " . $ten;
                 $win = true;
                 break;
             case $a * ($b - $c + $d):
-                echo $a . "(" . $b . " - " . $c . " + " . $d . ") = " . $ten;
+                echo $a . " × (" . $b . " - " . $c . " + " . $d . ") = " . $ten;
                 $win = true;
                 break;
             case $a * ($b - $c - $d):
-                echo $a . "(" . $b . " - " . $c . " - " . $d . ") = " . $ten;
+                echo $a . " × (" . $b . " - " . $c . " - " . $d . ") = " . $ten;
                 $win = true;
                 break;
             //3
@@ -270,11 +271,11 @@ function Calculate($ten, $a, $b, $c, $d): bool {
                 break;
             //6
             case $a * ($b * $c + $d):
-                echo $a . "×(" . $b . " × " . $c . " + " . $d . ") = " . $ten;
+                echo $a . " × (" . $b . " × " . $c . " + " . $d . ") = " . $ten;
                 $win = true;
                 break;
             case $a * ($b * $c - $d):
-                echo $a . "×(" . $b . " × " . $c . " - " . $d . ") = " . $ten;
+                echo $a . " × (" . $b . " × " . $c . " - " . $d . ") = " . $ten;
                 $win = true;
                 break;
             //7&8
@@ -329,19 +330,118 @@ function Calculate($ten, $a, $b, $c, $d): bool {
 <html lang="en">
 <head>
     <title>Make 10 Calculator</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        div#inputbuttons {
+            text-align: center;
+        }
+
+        input[type="number"] {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 20px;
+            width: 50px;
+            margin: 5px;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border: 2px solid #4285f4;
+        }
+
+        input[type="submit"] {
+            background-color: #4285f4;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 20px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #357ae8;
+        }
+        span#results {
+            font-size: 50px;
+        }
+
+        @media (max-width: 600px) {
+            input[type="number"] {
+                width: 80%;
+            }
+        }
+    </style>
 </head>
 <body>
-<pre>Insert 4 digits to make</pre>
-<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-    <input type="number" max="9" min="0" placeholder="1" name="a">
-    <input type="number" max="9" min="0" placeholder="2" name="b">
-    <input type="number" max="9" min="0" placeholder="3" name="c">
-    <input type="number" max="9" min="0" placeholder="4" name="d">
-    <!--<input type="number" value="" . $ten name="value" disabled style="position: relative; top: 10px; left: 180px; max-width: 30px">  for future-->
+<div id="inputbuttons">
+    <div style="text-align: center; margin-bottom: 20px;">
+        <span id="results"></span>
+    </div>
+    <input type="number" maxlength="1" max="9" min="0" step="1" placeholder="1" name="a" inputmode="numeric" pattern="[0-9]*">
+    <input type="number" maxlength="1" max="9" min="0" step="1" placeholder="2" name="b" inputmode="numeric" pattern="[0-9]*">
+    <input type="number" maxlength="1" max="9" min="0" step="1" placeholder="3" name="c" inputmode="numeric" pattern="[0-9]*">
+    <input type="number" maxlength="1" max="9" min="0" step="1" placeholder="4" name="d" inputmode="numeric" pattern="[0-9]*">
     <br>
-    <br>
-    <input type="submit" name="submit">
-</form>
-
+    <input type="submit" name="submit" id="submitBtn">
+</div>
 </body>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(() => {
+
+
+        $('#submitBtn').on('click', function (event) {
+            event.preventDefault();
+            var inputValues = $('input[type="number"]').map(function(){
+                return $(this).val();
+            }).get().join('');
+
+            if(inputValues.length !== 4){
+                alert('Please enter 1 digits for each input.');
+                return false; // Prevent form submission
+            }
+
+
+            let a = $('input[name="a"]').val();
+            let b = $('input[name="b"]').val();
+            let c = $('input[name="c"]').val();
+            let d = $('input[name="d"]').val();
+
+            $.ajax({
+                url: 'index.php',
+                type: 'POST',
+                data: {
+                    a: a,
+                    b: b,
+                    c: c,
+                    d: d,
+                    submit: ''
+                },
+                success: function (data) {
+                    console.log(data);
+                    $('#results').html(data);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.error('Error:', errorThrown);
+                }
+            });
+        });
+    });
+</script>
 </html>
