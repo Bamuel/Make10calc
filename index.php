@@ -330,6 +330,10 @@ function Calculate($ten, $a, $b, $c, $d): bool {
 <html lang="en">
 <head>
     <title>Make 10 Calculator</title>
+    <meta charset="utf-8">
+    <meta name="description" content="Make 10 Calculator">
+    <meta name="author" content="Bamuel">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
             background-color: #121212;
@@ -377,15 +381,11 @@ function Calculate($ten, $a, $b, $c, $d): bool {
         input[type="submit"]:hover {
             background-color: #357ae8;
         }
+
         span#results {
             font-size: 50px;
         }
 
-        @media (max-width: 600px) {
-            input[type="number"] {
-                width: 80%;
-            }
-        }
     </style>
 </head>
 <body>
@@ -408,11 +408,11 @@ function Calculate($ten, $a, $b, $c, $d): bool {
 
         $('#submitBtn').on('click', function (event) {
             event.preventDefault();
-            var inputValues = $('input[type="number"]').map(function(){
+            var inputValues = $('input[type="number"]').map(function () {
                 return $(this).val();
             }).get().join('');
 
-            if(inputValues.length !== 4){
+            if (inputValues.length !== 4) {
                 alert('Please enter 1 digits for each input.');
                 return false; // Prevent form submission
             }
