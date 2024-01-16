@@ -1,25 +1,24 @@
 <?php
 
 if (isset($_POST['submit'])) {
+    $foundSolution = false;
+
     $a = $_POST["a"];
     $b = $_POST["b"];
     $c = $_POST["c"];
     $d = $_POST["d"];
     $ten = 10;
-    unset($_POST);
-    error_reporting(0); //remove division by 0
-
-    $foundSolution = false;
 
     for ($i = 0; $i <= 4; $i++) {
+        if ($foundSolution = calculate($ten, $a, $b, $c, $d)) {
+            break;
+        }
         $temp1 = $a;
         $a = $b;
         $b = $c;
         $c = $d;
         $d = $temp1;
-
-        if (@calculate($ten, $a, $b, $c, $d)) {
-            $foundSolution = true;
+        if ($foundSolution = calculate($ten, $a, $b, $c, $d)) {
             break;
         }
 
@@ -28,9 +27,7 @@ if (isset($_POST['submit'])) {
             $b = $c;
             $c = $d;
             $d = $temp2;
-
-            if (@calculate($ten, $a, $b, $c, $d)) {
-                $foundSolution = true;
+            if ($foundSolution = calculate($ten, $a, $b, $c, $d)) {
                 break 2;
             }
 
@@ -38,9 +35,7 @@ if (isset($_POST['submit'])) {
                 $temp3 = $c;
                 $c = $d;
                 $d = $temp3;
-
-                if (@calculate($ten, $a, $b, $c, $d)) {
-                    $foundSolution = true;
+                if ($foundSolution = calculate($ten, $a, $b, $c, $d)) {
                     break 3;
                 }
             }
@@ -50,280 +45,57 @@ if (isset($_POST['submit'])) {
     if (!$foundSolution) {
         echo "There are no possible solutions";
     }
+    else {
+        echo $foundSolution;
+    }
     exit();
 }
 
+function Calculate($ten, $a, $b, $c, $d) {
+    $combinations = array("+", "-", "*", "/");
+    for ($i = 0; $i < 4; $i++) {
+        $op1 = $combinations[$i];
+        for ($j = 0; $j < 4; $j++) {
+            $op2 = $combinations[$j];
+            for ($k = 0; $k < 4; $k++) {
+                $op3 = $combinations[$k];
+                // Test with parentheses in different positions
+                for ($parenthesesPos = 0; $parenthesesPos < 4; $parenthesesPos++) {
+                    switch ($parenthesesPos) {
+                        case 0:
+                            $expression = "$a $op1 $b $op2 $c $op3 $d";
+                            break;
+                        case 1:
+                            $expression = "($a $op1 $b) $op2 $c $op3 $d";
+                            break;
+                        case 2:
+                            $expression = "$a $op1 ($b $op2 $c) $op3 $d";
+                            break;
+                        case 3:
+                            $expression = "$a $op1 $b $op2 ($c $op3 $d)";
+                            break;
+                    }
 
-function Calculate($ten, $a, $b, $c, $d): bool {
-    $win = false;
-    try {
-        switch ($ten) {
-            //Additions and subtractions only.
-            case $a + $b + $c + $d:
-                echo $a . " + " . $b . " + " . $c . " + " . $d . " = " . $ten;
-                $win = true;
-                break;
-            case $a + $b + $c - $d:
-                echo $a . " + " . $b . " + " . $c . " - " . $d . " = " . $ten;
-                $win = true;
-                break;
-            case $a + $b - $c - $d:
-                echo $a . " + " . $b . " - " . $c . " - " . $d . " = " . $ten;
-                $win = true;
-                break;
-            case $a - $b - $c - $d:
-                echo $a . " - " . $b . " - " . $c . " - " . $d . " = " . $ten;
-                $win = true;
-                break;
-            case $a - $b - $c + $d:
-                echo $a . " - " . $b . " - " . $c . " + " . $d . " = " . $ten;
-                $win = true;
-                break;
-            case $a + $b - $c + $d:
-                echo $a . " + " . $b . " - " . $c . " + " . $d . " = " . $ten;
-                $win = true;
-                break;
-            case $a - $b + $c + $d:
-                echo $a . " - " . $b . " + " . $c . " + " . $d . " = " . $ten;
-                $win = true;
-                break;
-            case $a - $b + $c - $d:
-                echo $a . " - " . $b . " + " . $c . " - " . $d . " = " . $ten;
-                $win = true;
-                break;
+                    try {
+                        $result = eval("return $expression;");
+                    } catch (DivisionByZeroError $e) {
+                        //echo "Error: " . $e->getMessage();
+                        //continue; // Skip to the next iteration if division by zero occurs
+                    }
 
-            //Multiplications and Division only
-            case $a * $b * $c * $d:
-                echo $a . " × " . $b . " × " . $c . " × " . $d . " = " . $ten;
-                $win = true;
-                break;
-            case $a * $b * $c / $d:
-                echo $a . " × " . $b . " × " . $c . " ÷ " . $d . " = " . $ten;
-                $win = true;
-                break;
-            case $a * $b / $c / $d:
-                echo $a . " × " . $b . " ÷ " . $c . " ÷ " . $d . " = " . $ten;
-                $win = true;
-                break;
-            case $a / $b / $c / $d:
-                echo $a . " ÷ " . $b . " ÷ " . $c . " ÷ " . $d . " = " . $ten;
-                $win = true;
-                break;
-            case $a / $b / $c * $d:
-                echo $a . " ÷ " . $b . " ÷ " . $c . " × " . $d . " = " . $ten;
-                $win = true;
-                break;
-            case $a * $b / $c * $d:
-                echo $a . " × " . $b . " ÷ " . $c . " × " . $d . " = " . $ten;
-                $win = true;
-                break;
-            case $a / $b * $c * $d:
-                echo $a . " ÷ " . $b . " × " . $c . " × " . $d . " = " . $ten;
-                $win = true;
-                break;
-            case $a / $b * $c / $d:
-                echo $a . " ÷ " . $b . " × " . $c . " ÷ " . $d . " = " . $ten;
-                $win = true;
-                break;
+                    if ($result == $ten) {
+                        // change * to × and / to ÷
+                        $expression = str_replace("*", "×", $expression);
+                        $expression = str_replace("/", "÷", $expression);
 
-            //One Multiplication
-            case $a * $b + $c + $d:
-                echo $a . " × " . $b . " + " . $c . " + " . $d . " = " . $ten;
-                $win = true;
-                break;
-            case $a * $b + $c - $d:
-                echo $a . " × " . $b . " + " . $c . " - " . $d . " = " . $ten;
-                $win = true;
-                break;
-            case $a * $b - $c + $d:
-                echo $a . " × " . $b . " - " . $c . " + " . $d . " = " . $ten;
-                $win = true;
-                break;
-            case $a * $b - $c - $d:
-                echo $a . " × " . $b . " - " . $c . " - " . $d . " = " . $ten;
-                $win = true;
-                break;
-
-            //One Division
-            case $a / $b + $c + $d:
-                echo $a . " ÷ " . $b . " + " . $c . " + " . $d . " = " . $ten;
-                $win = true;
-                break;
-            case $a / $b + $c - $d:
-                echo $a . " ÷ " . $b . " + " . $c . " - " . $d . " = " . $ten;
-                $win = true;
-                break;
-            case $a / $b - $c + $d:
-                echo $a . " ÷ " . $b . " - " . $c . " + " . $d . " = " . $ten;
-                $win = true;
-                break;
-            case $a / $b - $c - $d:
-                echo $a . " ÷ " . $b . " - " . $c . " - " . $d . " = " . $ten;
-                $win = true;
-                break;
-
-            //Two Multiplications
-            case $a * $b * $c + $d:
-                echo $a . " × " . $b . " × " . $c . " + " . $d . " = " . $ten;
-                $win = true;
-                break;
-            case $a * $b * $c - $d:
-                echo $a . " × " . $b . " × " . $c . " - " . $d . " = " . $ten;
-                $win = true;
-                break;
-
-            //One Multiplication and one division
-            case $a * $b / $c + $d:
-                echo $a . " × " . $b . " ÷ " . $c . " + " . $d . " = " . $ten;
-                $win = true;
-                break;
-            case $a * $b / $c - $d:
-                echo $a . " × " . $b . " ÷ " . $c . " - " . $d . " = " . $ten;
-                $win = true;
-                break;
-
-            //Two Divisions
-            case $a / $b / $c + $d:
-                echo $a . " ÷ " . $b . " ÷ " . $c . " + " . $d . " = " . $ten;
-                $win = true;
-                break;
-            case $a / $b / $c - $d:
-                echo $a . " ÷ " . $b . " ÷ " . $c . " - " . $d . " = " . $ten;
-                $win = true;
-                break;
-
-            //Brackets
-            case $a * ($b + $c) - $d:
-                echo $a . " × (" . $b . " + " . $c . ") - " . $d . " = " . $ten;
-                $win = true;
-                break;
-            case $a * ($b + $c) + $d:
-                echo $a . " × (" . $b . " + " . $c . ") + " . $d . " = " . $ten;
-                $win = true;
-                break;
-            case $a * ($b - $c) + $d:
-                echo $a . " × (" . $b . " - " . $c . ") + " . $d . " = " . $ten;
-                $win = true;
-                break;
-            case $a * ($b - $c) - $d:
-                echo $a . " × (" . $b . " - " . $c . ") - " . $d . " = " . $ten;
-                $win = true;
-                break;
-            //2
-            case $a * ($b + $c + $d):
-                echo $a . " × (" . $b . " + " . $c . " + " . $d . ") = " . $ten;
-                $win = true;
-                break;
-            case $a * ($b + $c - $d):
-                echo $a . " × (" . $b . " + " . $c . " - " . $d . ") = " . $ten;
-                $win = true;
-                break;
-            case $a * ($b - $c + $d):
-                echo $a . " × (" . $b . " - " . $c . " + " . $d . ") = " . $ten;
-                $win = true;
-                break;
-            case $a * ($b - $c - $d):
-                echo $a . " × (" . $b . " - " . $c . " - " . $d . ") = " . $ten;
-                $win = true;
-                break;
-            //3
-            case $a / ($b + $c) - $d:
-                echo $a . " ÷ (" . $b . " + " . $c . ") - " . $d . " = " . $ten;
-                $win = true;
-                break;
-            case $a / ($b + $c) + $d:
-                echo $a . " ÷ (" . $b . " + " . $c . ") + " . $d . " = " . $ten;
-                $win = true;
-                break;
-            case $a / ($b - $c) + $d:
-                echo $a . " ÷ (" . $b . " - " . $c . ") + " . $d . " = " . $ten;
-                $win = true;
-                break;
-            case $a / ($b - $c) - $d:
-                echo $a . " ÷ (" . $b . " - " . $c . ") - " . $d . " = " . $ten;
-                $win = true;
-                break;
-            //4
-            case $a / ($b + $c + $d):
-                echo $a . " ÷ (" . $b . " + " . $c . " + " . $d . ") = " . $ten;
-                $win = true;
-                break;
-            case $a / ($b + $c - $d):
-                echo $a . " ÷ (" . $b . " + " . $c . " - " . $d . ") = " . $ten;
-                $win = true;
-                break;
-            case $a / ($b - $c + $d):
-                echo $a . " ÷ (" . $b . " - " . $c . " + " . $d . ") = " . $ten;
-                $win = true;
-                break;
-            case $a / ($b - $c - $d):
-                echo $a . " ÷ (" . $b . " - " . $c . " - " . $d . ") = " . $ten;
-                $win = true;
-                break;
-            //5
-            case $a * $b * ($c + $d):
-                echo $a . " × " . $b . "(" . $c . " + " . $d . ") = " . $ten;
-                $win = true;
-                break;
-            case $a * $b * ($c - $d):
-                echo $a . " × " . $b . "(" . $c . " - " . $d . ") = " . $ten;
-                $win = true;
-                break;
-            //6
-            case $a * ($b * $c + $d):
-                echo $a . " × (" . $b . " × " . $c . " + " . $d . ") = " . $ten;
-                $win = true;
-                break;
-            case $a * ($b * $c - $d):
-                echo $a . " × (" . $b . " × " . $c . " - " . $d . ") = " . $ten;
-                $win = true;
-                break;
-            //7&8
-            case $a * $b / ($c + $d):
-                echo $a . " × " . $b . " ÷ (" . $c . " + " . $d . ") = " . $ten;
-                $win = true;
-                break;
-            case $a * $b / ($c - $d):
-                echo $a . " × " . $b . " ÷ (" . $c . " - " . $d . ") = " . $ten;
-                $win = true;
-                break;
-            //9&10
-            case $a / $b * ($c + $d):
-                echo $a . " ÷ " . $b . "×(" . $c . " + " . $d . ") = " . $ten;
-                $win = true;
-                break;
-            case $a / $b * ($c - $d):
-                echo $a . " ÷ " . $b . "×(" . $c . " - " . $d . ") = " . $ten;
-                $win = true;
-                break;
-            //11
-            case $a / $b / ($c + $d):
-                echo $a . " ÷ " . $b . " ÷ (" . $c . " + " . $d . ") = " . $ten;
-                $win = true;
-                break;
-            case $a / $b / ($c - $d):
-                echo $a . " ÷ " . $b . " ÷ (" . $c . " - " . $d . ") = " . $ten;
-                $win = true;
-                break;
-            //12
-            case $a / ($b / $c + $d):
-                echo $a . " ÷ (" . $b . " ÷ " . $c . " + " . $d . ") = " . $ten;
-                $win = true;
-                break;
-            case $a / ($b / $c - $d):
-                echo $a . " ÷ (" . $b . " ÷ " . $c . " - " . $d . ") = " . $ten;
-                $win = true;
-                break;
-            default:
-                //echo "<br>";
-                break;
+                        return $expression . " = " . $ten;
+                    }
+                }
+            }
         }
-    } catch (DivisionByZeroError $e) {
-        //echo "Error: " . $e->getMessage();
     }
-    return $win;
+    return false;
 }
-
 
 ?>
 <!DOCTYPE html>
@@ -333,6 +105,7 @@ function Calculate($ten, $a, $b, $c, $d): bool {
     <meta charset="utf-8">
     <meta name="description" content="Make 10 Calculator">
     <meta name="author" content="Bamuel">
+    <meta content='width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;' name='viewport'/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
@@ -393,10 +166,10 @@ function Calculate($ten, $a, $b, $c, $d): bool {
     <div style="text-align: center; margin-bottom: 20px;">
         <span id="results"></span>
     </div>
-    <input type="number" maxlength="1" max="9" min="0" step="1" placeholder="1" name="a" inputmode="numeric" pattern="[0-9]*">
-    <input type="number" maxlength="1" max="9" min="0" step="1" placeholder="2" name="b" inputmode="numeric" pattern="[0-9]*">
-    <input type="number" maxlength="1" max="9" min="0" step="1" placeholder="3" name="c" inputmode="numeric" pattern="[0-9]*">
-    <input type="number" maxlength="1" max="9" min="0" step="1" placeholder="4" name="d" inputmode="numeric" pattern="[0-9]*">
+    <input type="number" onClick="this.select();" maxlength="1" max="9" min="0" step="1" placeholder="1" name="a" inputmode="numeric" pattern="[0-9]*">
+    <input type="number" onClick="this.select();" maxlength="1" max="9" min="0" step="1" placeholder="2" name="b" inputmode="numeric" pattern="[0-9]*">
+    <input type="number" onClick="this.select();" maxlength="1" max="9" min="0" step="1" placeholder="3" name="c" inputmode="numeric" pattern="[0-9]*">
+    <input type="number" onClick="this.select();" maxlength="1" max="9" min="0" step="1" placeholder="4" name="d" inputmode="numeric" pattern="[0-9]*">
     <br>
     <input type="submit" name="submit" id="submitBtn">
 </div>
@@ -404,7 +177,15 @@ function Calculate($ten, $a, $b, $c, $d): bool {
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script>
     $(document).ready(() => {
+        $('input[type="number"]').on('input', function () {
+            var currentInput = $(this);
+            var nextInput = currentInput.next('input[type="number"]');
 
+            if (currentInput.val().length === 1 && nextInput.length) {
+                nextInput.focus();
+                nextInput.select();
+            }
+        });
 
         $('#submitBtn').on('click', function (event) {
             event.preventDefault();
