@@ -18,7 +18,7 @@ if (isset($_POST['submit'])) {
         $c = $d;
         $d = $temp1;
 
-        if (calculate($ten, $a, $b, $c, $d)) {
+        if (@calculate($ten, $a, $b, $c, $d)) {
             $foundSolution = true;
             break;
         }
@@ -29,7 +29,7 @@ if (isset($_POST['submit'])) {
             $c = $d;
             $d = $temp2;
 
-            if (calculate($ten, $a, $b, $c, $d)) {
+            if (@calculate($ten, $a, $b, $c, $d)) {
                 $foundSolution = true;
                 break 2;
             }
@@ -39,7 +39,7 @@ if (isset($_POST['submit'])) {
                 $c = $d;
                 $d = $temp3;
 
-                if (calculate($ten, $a, $b, $c, $d)) {
+                if (@calculate($ten, $a, $b, $c, $d)) {
                     $foundSolution = true;
                     break 3;
                 }
@@ -53,279 +53,280 @@ if (isset($_POST['submit'])) {
 }
 
 
-function Calculate($ten, $a, $b, $c, $d) {
+function Calculate($ten, $a, $b, $c, $d): bool {
     $win = false;
+    try {
+        switch ($ten) {
+            //Additions and subtractions only.
+            case $a + $b + $c + $d:
+                echo $a . " + " . $b . " + " . $c . " + " . $d . " = " . $ten;
+                $win = true;
+                break;
+            case $a + $b + $c - $d:
+                echo $a . " + " . $b . " + " . $c . " - " . $d . " = " . $ten;
+                $win = true;
+                break;
+            case $a + $b - $c - $d:
+                echo $a . " + " . $b . " - " . $c . " - " . $d . " = " . $ten;
+                $win = true;
+                break;
+            case $a - $b - $c - $d:
+                echo $a . " - " . $b . " - " . $c . " - " . $d . " = " . $ten;
+                $win = true;
+                break;
+            case $a - $b - $c + $d:
+                echo $a . " - " . $b . " - " . $c . " + " . $d . " = " . $ten;
+                $win = true;
+                break;
+            case $a + $b - $c + $d:
+                echo $a . " + " . $b . " - " . $c . " + " . $d . " = " . $ten;
+                $win = true;
+                break;
+            case $a - $b + $c + $d:
+                echo $a . " - " . $b . " + " . $c . " + " . $d . " = " . $ten;
+                $win = true;
+                break;
+            case $a - $b + $c - $d:
+                echo $a . " - " . $b . " + " . $c . " - " . $d . " = " . $ten;
+                $win = true;
+                break;
 
-    switch ($ten) {
-        //Additions and subtractions only.
-        case $a + $b + $c + $d:
-            echo $a . "+" . $b . "+" . $c . "+" . $d . "=" . $ten;
-            $win = true;
-            break;
-        case $a + $b + $c - $d:
-            echo $a . "+" . $b . "+" . $c . "-" . $d . "=" . $ten;
-            $win = true;
-            break;
-        case $a + $b - $c - $d:
-            echo $a . "+" . $b . "-" . $c . "-" . $d . "=" . $ten;
-            $win = true;
-            break;
-        case $a - $b - $c - $d:
-            echo $a . "-" . $b . "-" . $c . "-" . $d . "=" . $ten;
-            $win = true;
-            break;
-        case $a - $b - $c + $d:
-            echo $a . "-" . $b . "-" . $c . "+" . $d . "=" . $ten;
-            $win = true;
-            break;
-        case $a + $b - $c + $d:
-            echo $a . "+" . $b . "-" . $c . "+" . $d . "=" . $ten;
-            $win = true;
-            break;
-        case $a - $b + $c + $d:
-            echo $a . "-" . $b . "+" . $c . "+" . $d . "=" . $ten;
-            $win = true;
-            break;
-        case $a - $b + $c - $d:
-            echo $a . "-" . $b . "+" . $c . "-" . $d . "=" . $ten;
-            $win = true;
-            break;
+            //Multiplications and Division only
+            case $a * $b * $c * $d:
+                echo $a . " × " . $b . " × " . $c . " × " . $d . " = " . $ten;
+                $win = true;
+                break;
+            case $a * $b * $c / $d:
+                echo $a . " × " . $b . " × " . $c . " ÷ " . $d . " = " . $ten;
+                $win = true;
+                break;
+            case $a * $b / $c / $d:
+                echo $a . " × " . $b . " ÷ " . $c . " ÷ " . $d . " = " . $ten;
+                $win = true;
+                break;
+            case $a / $b / $c / $d:
+                echo $a . " ÷ " . $b . " ÷ " . $c . " ÷ " . $d . " = " . $ten;
+                $win = true;
+                break;
+            case $a / $b / $c * $d:
+                echo $a . " ÷ " . $b . " ÷ " . $c . " × " . $d . " = " . $ten;
+                $win = true;
+                break;
+            case $a * $b / $c * $d:
+                echo $a . " × " . $b . " ÷ " . $c . " × " . $d . " = " . $ten;
+                $win = true;
+                break;
+            case $a / $b * $c * $d:
+                echo $a . " ÷ " . $b . " × " . $c . " × " . $d . " = " . $ten;
+                $win = true;
+                break;
+            case $a / $b * $c / $d:
+                echo $a . " ÷ " . $b . " × " . $c . " ÷ " . $d . " = " . $ten;
+                $win = true;
+                break;
 
-        //Multiplications and Division only
-        case $a * $b * $c * $d:
-            echo $a . "*" . $b . "*" . $c . "*" . $d . "=" . $ten;
-            $win = true;
-            break;
-        case $a * $b * $c / $d:
-            echo $a . "*" . $b . "*" . $c . "/" . $d . "=" . $ten;
-            $win = true;
-            break;
-        case $a * $b / $c / $d:
-            echo $a . "*" . $b . "/" . $c . "/" . $d . "=" . $ten;
-            $win = true;
-            break;
-        case $a / $b / $c / $d:
-            echo $a . "/" . $b . "/" . $c . "/" . $d . "=" . $ten;
-            $win = true;
-            break;
-        case $a / $b / $c * $d:
-            echo $a . "/" . $b . "/" . $c . "*" . $d . "=" . $ten;
-            $win = true;
-            break;
-        case $a * $b / $c * $d:
-            echo $a . "*" . $b . "/" . $c . "*" . $d . "=" . $ten;
-            $win = true;
-            break;
-        case $a / $b * $c * $d:
-            echo $a . "/" . $b . "*" . $c . "*" . $d . "=" . $ten;
-            $win = true;
-            break;
-        case $a / $b * $c / $d:
-            echo $a . "/" . $b . "*" . $c . "/" . $d . "=" . $ten;
-            $win = true;
-            break;
+            //One Multiplication
+            case $a * $b + $c + $d:
+                echo $a . " × " . $b . " + " . $c . " + " . $d . " = " . $ten;
+                $win = true;
+                break;
+            case $a * $b + $c - $d:
+                echo $a . " × " . $b . " + " . $c . " - " . $d . " = " . $ten;
+                $win = true;
+                break;
+            case $a * $b - $c + $d:
+                echo $a . " × " . $b . " - " . $c . " + " . $d . " = " . $ten;
+                $win = true;
+                break;
+            case $a * $b - $c - $d:
+                echo $a . " × " . $b . " - " . $c . " - " . $d . " = " . $ten;
+                $win = true;
+                break;
 
-        //One Multiplication
-        case $a * $b + $c + $d:
-            echo $a . "*" . $b . "+" . $c . "+" . $d . "=" . $ten;
-            $win = true;
-            break;
-        case $a * $b + $c - $d:
-            echo $a . "*" . $b . "+" . $c . "-" . $d . "=" . $ten;
-            $win = true;
-            break;
-        case $a * $b - $c + $d:
-            echo $a . "*" . $b . "-" . $c . "+" . $d . "=" . $ten;
-            $win = true;
-            break;
-        case $a * $b - $c - $d:
-            echo $a . "*" . $b . "-" . $c . "-" . $d . "=" . $ten;
-            $win = true;
-            break;
+            //One Division
+            case $a / $b + $c + $d:
+                echo $a . " ÷ " . $b . " + " . $c . " + " . $d . " = " . $ten;
+                $win = true;
+                break;
+            case $a / $b + $c - $d:
+                echo $a . " ÷ " . $b . " + " . $c . " - " . $d . " = " . $ten;
+                $win = true;
+                break;
+            case $a / $b - $c + $d:
+                echo $a . " ÷ " . $b . " - " . $c . " + " . $d . " = " . $ten;
+                $win = true;
+                break;
+            case $a / $b - $c - $d:
+                echo $a . " ÷ " . $b . " - " . $c . " - " . $d . " = " . $ten;
+                $win = true;
+                break;
 
-        //One Division
-        case $a / $b + $c + $d:
-            echo $a . "/" . $b . "+" . $c . "+" . $d . "=" . $ten;
-            $win = true;
-            break;
-        case $a / $b + $c - $d:
-            echo $a . "/" . $b . "+" . $c . "-" . $d . "=" . $ten;
-            $win = true;
-            break;
-        case $a / $b - $c + $d:
-            echo $a . "/" . $b . "-" . $c . "+" . $d . "=" . $ten;
-            $win = true;
-            break;
-        case $a / $b - $c - $d:
-            echo $a . "/" . $b . "-" . $c . "-" . $d . "=" . $ten;
-            $win = true;
-            break;
+            //Two Multiplications
+            case $a * $b * $c + $d:
+                echo $a . " × " . $b . " × " . $c . " + " . $d . " = " . $ten;
+                $win = true;
+                break;
+            case $a * $b * $c - $d:
+                echo $a . " × " . $b . " × " . $c . " - " . $d . " = " . $ten;
+                $win = true;
+                break;
 
-        //Two Multiplications
-        case $a * $b * $c + $d:
-            echo $a . "*" . $b . "*" . $c . "+" . $d . "=" . $ten;
-            $win = true;
-            break;
-        case $a * $b * $c - $d:
-            echo $a . "*" . $b . "*" . $c . "-" . $d . "=" . $ten;
-            $win = true;
-            break;
+            //One Multiplication and one division
+            case $a * $b / $c + $d:
+                echo $a . " × " . $b . " ÷ " . $c . " + " . $d . " = " . $ten;
+                $win = true;
+                break;
+            case $a * $b / $c - $d:
+                echo $a . " × " . $b . " ÷ " . $c . " - " . $d . " = " . $ten;
+                $win = true;
+                break;
 
-        //One Multiplication and one division
-        case $a * $b / $c + $d:
-            echo $a . "*" . $b . "/" . $c . "+" . $d . "=" . $ten;
-            $win = true;
-            break;
-        case $a * $b / $c - $d:
-            echo $a . "*" . $b . "/" . $c . "-" . $d . "=" . $ten;
-            $win = true;
-            break;
+            //Two Divisions
+            case $a / $b / $c + $d:
+                echo $a . " ÷ " . $b . " ÷ " . $c . " + " . $d . " = " . $ten;
+                $win = true;
+                break;
+            case $a / $b / $c - $d:
+                echo $a . " ÷ " . $b . " ÷ " . $c . " - " . $d . " = " . $ten;
+                $win = true;
+                break;
 
-        //Two Divisions
-        case $a / $b / $c + $d:
-            echo $a . "/" . $b . "/" . $c . "+" . $d . "=" . $ten;
-            $win = true;
-            break;
-        case $a / $b / $c - $d:
-            echo $a . "/" . $b . "/" . $c . "-" . $d . "=" . $ten;
-            $win = true;
-            break;
-
-        //Brackets
-        case $a * ($b + $c) - $d:
-            echo $a . "(" . $b . "+" . $c . ")-" . $d . "=" . $ten;
-            $win = true;
-            break;
-        case $a * ($b + $c) + $d:
-            echo $a . "(" . $b . "+" . $c . ")+" . $d . "=" . $ten;
-            $win = true;
-            break;
-        case $a * ($b - $c) + $d:
-            echo $a . "(" . $b . "-" . $c . ")+" . $d . "=" . $ten;
-            $win = true;
-            break;
-        case $a * ($b - $c) - $d:
-            echo $a . "(" . $b . "-" . $c . ")-" . $d . "=" . $ten;
-            $win = true;
-            break;
-        //2
-        case $a * ($b + $c + $d):
-            echo $a . "(" . $b . "+" . $c . "+" . $d . ")=" . $ten;
-            $win = true;
-            break;
-        case $a * ($b + $c - $d):
-            echo $a . "(" . $b . "+" . $c . "-" . $d . ")=" . $ten;
-            $win = true;
-            break;
-        case $a * ($b - $c + $d):
-            echo $a . "(" . $b . "-" . $c . "+" . $d . ")=" . $ten;
-            $win = true;
-            break;
-        case $a * ($b - $c - $d):
-            echo $a . "(" . $b . "-" . $c . "-" . $d . ")=" . $ten;
-            $win = true;
-            break;
-        //3
-        case $a / ($b + $c) - $d:
-            echo $a . "/(" . $b . "+" . $c . ")-" . $d . "=" . $ten;
-            $win = true;
-            break;
-        case $a / ($b + $c) + $d:
-            echo $a . "/(" . $b . "+" . $c . ")+" . $d . "=" . $ten;
-            $win = true;
-            break;
-        case $a / ($b - $c) + $d:
-            echo $a . "/(" . $b . "-" . $c . ")+" . $d . "=" . $ten;
-            $win = true;
-            break;
-        case $a / ($b - $c) - $d:
-            echo $a . "/(" . $b . "-" . $c . ")-" . $d . "=" . $ten;
-            $win = true;
-            break;
-        //4
-        case $a / ($b + $c + $d):
-            echo $a . "/(" . $b . "+" . $c . "+" . $d . ")=" . $ten;
-            $win = true;
-            break;
-        case $a / ($b + $c - $d):
-            echo $a . "/(" . $b . "+" . $c . "-" . $d . ")=" . $ten;
-            $win = true;
-            break;
-        case $a / ($b - $c + $d):
-            echo $a . "/(" . $b . "-" . $c . "+" . $d . ")=" . $ten;
-            $win = true;
-            break;
-        case $a / ($b - $c - $d):
-            echo $a . "/(" . $b . "-" . $c . "-" . $d . ")=" . $ten;
-            $win = true;
-            break;
-        //5
-        case $a * $b * ($c + $d):
-            echo $a . "*" . $b . "(" . $c . "+" . $d . ")=" . $ten;
-            $win = true;
-            break;
-        case $a * $b * ($c - $d):
-            echo $a . "*" . $b . "(" . $c . "-" . $d . ")=" . $ten;
-            $win = true;
-            break;
-        //6
-        case $a * ($b * $c + $d):
-            echo $a . "*(" . $b . "*" . $c . "+" . $d . ")=" . $ten;
-            $win = true;
-            break;
-        case $a * ($b * $c - $d):
-            echo $a . "*(" . $b . "*" . $c . "-" . $d . ")=" . $ten;
-            $win = true;
-            break;
-        //7&8
-        case $a * $b / ($c + $d):
-            echo $a . "*" . $b . "/(" . $c . "+" . $d . ")=" . $ten;
-            $win = true;
-            break;
-        case $a * $b / ($c - $d):
-            echo $a . "*" . $b . "/(" . $c . "-" . $d . ")=" . $ten;
-            $win = true;
-            break;
-        //9&10
-        case $a / $b * ($c + $d):
-            echo $a . "/" . $b . "*(" . $c . "+" . $d . ")=" . $ten;
-            $win = true;
-            break;
-        case $a / $b * ($c - $d):
-            echo $a . "/" . $b . "*(" . $c . "-" . $d . ")=" . $ten;
-            $win = true;
-            break;
-        //11
-        case $a / $b / ($c + $d):
-            echo $a . "/" . $b . "/(" . $c . "+" . $d . ")=" . $ten;
-            $win = true;
-            break;
-        case $a / $b / ($c - $d):
-            echo $a . "/" . $b . "/(" . $c . "-" . $d . ")=" . $ten;
-            $win = true;
-            break;
-        //12
-        case $a / ($b / $c + $d):
-            echo $a . "/(" . $b . "/" . $c . "+" . $d . ")=" . $ten;
-            $win = true;
-            break;
-        case $a / ($b / $c - $d):
-            echo $a . "/(" . $b . "/" . $c . "-" . $d . ")=" . $ten;
-            $win = true;
-            break;
-        default:
-            echo "<br>";
-            break;
+            //Brackets
+            case $a * ($b + $c) - $d:
+                echo $a . "(" . $b . " + " . $c . ") - " . $d . " = " . $ten;
+                $win = true;
+                break;
+            case $a * ($b + $c) + $d:
+                echo $a . "(" . $b . " + " . $c . ") + " . $d . " = " . $ten;
+                $win = true;
+                break;
+            case $a * ($b - $c) + $d:
+                echo $a . "(" . $b . " - " . $c . ") + " . $d . " = " . $ten;
+                $win = true;
+                break;
+            case $a * ($b - $c) - $d:
+                echo $a . "(" . $b . " - " . $c . ") - " . $d . " = " . $ten;
+                $win = true;
+                break;
+            //2
+            case $a * ($b + $c + $d):
+                echo $a . "(" . $b . " + " . $c . " + " . $d . ") = " . $ten;
+                $win = true;
+                break;
+            case $a * ($b + $c - $d):
+                echo $a . "(" . $b . " + " . $c . " - " . $d . ") = " . $ten;
+                $win = true;
+                break;
+            case $a * ($b - $c + $d):
+                echo $a . "(" . $b . " - " . $c . " + " . $d . ") = " . $ten;
+                $win = true;
+                break;
+            case $a * ($b - $c - $d):
+                echo $a . "(" . $b . " - " . $c . " - " . $d . ") = " . $ten;
+                $win = true;
+                break;
+            //3
+            case $a / ($b + $c) - $d:
+                echo $a . " ÷ (" . $b . " + " . $c . ") - " . $d . " = " . $ten;
+                $win = true;
+                break;
+            case $a / ($b + $c) + $d:
+                echo $a . " ÷ (" . $b . " + " . $c . ") + " . $d . " = " . $ten;
+                $win = true;
+                break;
+            case $a / ($b - $c) + $d:
+                echo $a . " ÷ (" . $b . " - " . $c . ") + " . $d . " = " . $ten;
+                $win = true;
+                break;
+            case $a / ($b - $c) - $d:
+                echo $a . " ÷ (" . $b . " - " . $c . ") - " . $d . " = " . $ten;
+                $win = true;
+                break;
+            //4
+            case $a / ($b + $c + $d):
+                echo $a . " ÷ (" . $b . " + " . $c . " + " . $d . ") = " . $ten;
+                $win = true;
+                break;
+            case $a / ($b + $c - $d):
+                echo $a . " ÷ (" . $b . " + " . $c . " - " . $d . ") = " . $ten;
+                $win = true;
+                break;
+            case $a / ($b - $c + $d):
+                echo $a . " ÷ (" . $b . " - " . $c . " + " . $d . ") = " . $ten;
+                $win = true;
+                break;
+            case $a / ($b - $c - $d):
+                echo $a . " ÷ (" . $b . " - " . $c . " - " . $d . ") = " . $ten;
+                $win = true;
+                break;
+            //5
+            case $a * $b * ($c + $d):
+                echo $a . " × " . $b . "(" . $c . " + " . $d . ") = " . $ten;
+                $win = true;
+                break;
+            case $a * $b * ($c - $d):
+                echo $a . " × " . $b . "(" . $c . " - " . $d . ") = " . $ten;
+                $win = true;
+                break;
+            //6
+            case $a * ($b * $c + $d):
+                echo $a . "×(" . $b . " × " . $c . " + " . $d . ") = " . $ten;
+                $win = true;
+                break;
+            case $a * ($b * $c - $d):
+                echo $a . "×(" . $b . " × " . $c . " - " . $d . ") = " . $ten;
+                $win = true;
+                break;
+            //7&8
+            case $a * $b / ($c + $d):
+                echo $a . " × " . $b . " ÷ (" . $c . " + " . $d . ") = " . $ten;
+                $win = true;
+                break;
+            case $a * $b / ($c - $d):
+                echo $a . " × " . $b . " ÷ (" . $c . " - " . $d . ") = " . $ten;
+                $win = true;
+                break;
+            //9&10
+            case $a / $b * ($c + $d):
+                echo $a . " ÷ " . $b . "×(" . $c . " + " . $d . ") = " . $ten;
+                $win = true;
+                break;
+            case $a / $b * ($c - $d):
+                echo $a . " ÷ " . $b . "×(" . $c . " - " . $d . ") = " . $ten;
+                $win = true;
+                break;
+            //11
+            case $a / $b / ($c + $d):
+                echo $a . " ÷ " . $b . " ÷ (" . $c . " + " . $d . ") = " . $ten;
+                $win = true;
+                break;
+            case $a / $b / ($c - $d):
+                echo $a . " ÷ " . $b . " ÷ (" . $c . " - " . $d . ") = " . $ten;
+                $win = true;
+                break;
+            //12
+            case $a / ($b / $c + $d):
+                echo $a . " ÷ (" . $b . " ÷ " . $c . " + " . $d . ") = " . $ten;
+                $win = true;
+                break;
+            case $a / ($b / $c - $d):
+                echo $a . " ÷ (" . $b . " ÷ " . $c . " - " . $d . ") = " . $ten;
+                $win = true;
+                break;
+            default:
+                //echo "<br>";
+                break;
+        }
+    } catch (DivisionByZeroError $e) {
+        //echo "Error: " . $e->getMessage();
     }
-    if ($win) {
-        return true;
-    }
+    return $win;
 }
 
 
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>Make 10 Calculator</title>
 </head>
