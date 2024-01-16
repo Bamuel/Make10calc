@@ -18,7 +18,7 @@ if (isset($_POST['submit'])) {
         $c = $d;
         $d = $temp1;
 
-        if (calculate($ten, $a, $b, $c, $d)) {
+        if (@calculate($ten, $a, $b, $c, $d)) {
             $foundSolution = true;
             break;
         }
@@ -29,7 +29,7 @@ if (isset($_POST['submit'])) {
             $c = $d;
             $d = $temp2;
 
-            if (calculate($ten, $a, $b, $c, $d)) {
+            if (@calculate($ten, $a, $b, $c, $d)) {
                 $foundSolution = true;
                 break 2;
             }
@@ -39,7 +39,7 @@ if (isset($_POST['submit'])) {
                 $c = $d;
                 $d = $temp3;
 
-                if (calculate($ten, $a, $b, $c, $d)) {
+                if (@calculate($ten, $a, $b, $c, $d)) {
                     $foundSolution = true;
                     break 3;
                 }
