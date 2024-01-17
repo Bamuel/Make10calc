@@ -1,27 +1,51 @@
 <?php
 
 if (isset($_POST['submit'])) {
-    $ten = 10;
     $foundSolution = false;
 
-    $variables = [$_POST["a"], $_POST["b"], $_POST["c"], $_POST["d"]];
+    $a = $_POST["a"];
+    $b = $_POST["b"];
+    $c = $_POST["c"];
+    $d = $_POST["d"];
+    $ten = 10;
 
-    for ($i = 0; $i < 2; $i++) {
-        for ($j = 0; $j < 3; $j++) {
-            for ($k = 0; $k < 4; $k++) {
-                if ($foundSolution = calculate($ten, ...$variables)) {
-                    break 3; // Break out of all three loops
+    for ($i = 0; $i <= 4; $i++) {
+        if ($foundSolution = calculate($ten, $a, $b, $c, $d)) {
+            break;
+        }
+        $temp1 = $a;
+        $a = $b;
+        $b = $c;
+        $c = $d;
+        $d = $temp1;
+        if ($foundSolution = calculate($ten, $a, $b, $c, $d)) {
+            break;
+        }
+
+        for ($j = 0; $j <= 3; $j++) {
+            $temp2 = $b;
+            $b = $c;
+            $c = $d;
+            $d = $temp2;
+            if ($foundSolution = calculate($ten, $a, $b, $c, $d)) {
+                break 2;
+            }
+
+            for ($k = 0; $k <= 2; $k++) {
+                $temp3 = $c;
+                $c = $d;
+                $d = $temp3;
+                if ($foundSolution = calculate($ten, $a, $b, $c, $d)) {
+                    break 3;
                 }
-                // Rotate the array elements
-                $temp = array_shift($variables);
-                array_push($variables, $temp);
             }
         }
     }
 
     if (!$foundSolution) {
         echo "There are no possible solutions";
-    }else{
+    }
+    else {
         echo $foundSolution;
     }
     exit();
@@ -35,20 +59,37 @@ function Calculate($ten, $a, $b, $c, $d) {
             $op2 = $combinations[$j];
             for ($k = 0; $k < 4; $k++) {
                 $op3 = $combinations[$k];
-                try {
-                    $result = eval("return $a $op1 $b $op2 $c $op3 $d;");
-                } catch (DivisionByZeroError $e) {
-                    //echo "Error: " . $e->getMessage();
-                }
-                if ($result == $ten) {
-                    // change * to × and / to ÷
-                    $op1 = str_replace("*", "×", $op1);
-                    $op2 = str_replace("*", "×", $op2);
-                    $op3 = str_replace("*", "×", $op3);
-                    $op1 = str_replace("/", "÷", $op1);
-                    $op2 = str_replace("/", "÷", $op2);
-                    $op3 = str_replace("/", "÷", $op3);
-                    return $a . " " . $op1 . " " . $b . " " . $op2 . " " . $c . " " . $op3 . " " . $d . " = " . $ten;
+                // Test with parentheses in different positions
+                for ($parenthesesPos = 0; $parenthesesPos < 4; $parenthesesPos++) {
+                    switch ($parenthesesPos) {
+                        case 0:
+                            $expression = "$a $op1 $b $op2 $c $op3 $d";
+                            break;
+                        case 1:
+                            $expression = "($a $op1 $b) $op2 $c $op3 $d";
+                            break;
+                        case 2:
+                            $expression = "$a $op1 ($b $op2 $c) $op3 $d";
+                            break;
+                        case 3:
+                            $expression = "$a $op1 $b $op2 ($c $op3 $d)";
+                            break;
+                    }
+
+                    try {
+                        $result = eval("return $expression;");
+                    } catch (DivisionByZeroError $e) {
+                        //echo "Error: " . $e->getMessage();
+                        //continue; // Skip to the next iteration if division by zero occurs
+                    }
+
+                    if ($result == $ten) {
+                        // change * to × and / to ÷
+                        $expression = str_replace("*", "×", $expression);
+                        $expression = str_replace("/", "÷", $expression);
+
+                        return $expression . " = " . $ten;
+                    }
                 }
             }
         }
@@ -64,7 +105,7 @@ function Calculate($ten, $a, $b, $c, $d) {
     <meta charset="utf-8">
     <meta name="description" content="Make 10 Calculator">
     <meta name="author" content="Bamuel">
-    <meta content='width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;' name='viewport' />
+    <meta content='width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;' name='viewport'/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
@@ -125,10 +166,10 @@ function Calculate($ten, $a, $b, $c, $d) {
     <div style="text-align: center; margin-bottom: 20px;">
         <span id="results"></span>
     </div>
-    <input type="number" maxlength="1" max="9" min="0" step="1" placeholder="1" name="a" inputmode="numeric" pattern="[0-9]*">
-    <input type="number" maxlength="1" max="9" min="0" step="1" placeholder="2" name="b" inputmode="numeric" pattern="[0-9]*">
-    <input type="number" maxlength="1" max="9" min="0" step="1" placeholder="3" name="c" inputmode="numeric" pattern="[0-9]*">
-    <input type="number" maxlength="1" max="9" min="0" step="1" placeholder="4" name="d" inputmode="numeric" pattern="[0-9]*">
+    <input type="number" onClick="this.select();" maxlength="1" max="9" min="0" step="1" placeholder="1" name="a" inputmode="numeric" pattern="[0-9]*">
+    <input type="number" onClick="this.select();" maxlength="1" max="9" min="0" step="1" placeholder="2" name="b" inputmode="numeric" pattern="[0-9]*">
+    <input type="number" onClick="this.select();" maxlength="1" max="9" min="0" step="1" placeholder="3" name="c" inputmode="numeric" pattern="[0-9]*">
+    <input type="number" onClick="this.select();" maxlength="1" max="9" min="0" step="1" placeholder="4" name="d" inputmode="numeric" pattern="[0-9]*">
     <br>
     <input type="submit" name="submit" id="submitBtn">
 </div>
@@ -136,7 +177,15 @@ function Calculate($ten, $a, $b, $c, $d) {
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script>
     $(document).ready(() => {
+        $('input[type="number"]').on('input', function () {
+            var currentInput = $(this);
+            var nextInput = currentInput.next('input[type="number"]');
 
+            if (currentInput.val().length === 1 && nextInput.length) {
+                nextInput.focus();
+                nextInput.select();
+            }
+        });
 
         $('#submitBtn').on('click', function (event) {
             event.preventDefault();
