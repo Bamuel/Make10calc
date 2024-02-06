@@ -6,6 +6,3 @@ I developed this calculator to tackle the Make Ten puzzle, a mathematical game c
 ## Motivation
 This posed a mental challenge for me with the numbers 6, 6, 7, and 8. After dedicating two days to it, I successfully achieved the goal of making ten at 2 am.
 The objective of the challenge was to reach the sum of "10" using the arithmetic operators +, -, *, /, and parentheses ().
-
-## Bonus Points
-I decided to take it a step further and create a calculator that would solve the puzzle for any four-digit number. I also added a feature that would allow the user to input any target number, not just 10.
