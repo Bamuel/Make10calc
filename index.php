@@ -163,6 +163,15 @@ function Calculate($ten, $a, $b, $c, $d) {
 
     </style>
 </head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Y45HNY4PWK"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-Y45HNY4PWK');
+</script>
 <body>
 <div id="inputbuttons">
     <header style="text-align: center; margin-bottom: 20px;">
