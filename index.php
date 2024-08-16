@@ -103,8 +103,10 @@ function Calculate($ten, $a, $b, $c, $d) {
 <head>
     <title>Make 10 Calculator</title>
     <meta charset="utf-8">
-    <meta name="description" content="Make 10 Calculator">
+    <meta name="description" content="Make Ten Calculator: Solve the popular Sydney train game by creating expressions that equal ten using given numbers.">
     <meta name="author" content="Bamuel">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="Make Ten Calculator, Sydney Train Game, Puzzle, Math Game, Number Game">
     <meta content='width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;' name='viewport'/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
@@ -163,15 +165,19 @@ function Calculate($ten, $a, $b, $c, $d) {
 </head>
 <body>
 <div id="inputbuttons">
-    <div style="text-align: center; margin-bottom: 20px;">
-        <span id="results"></span>
-    </div>
-    <input type="number" onClick="this.select();" maxlength="1" max="9" min="0" step="1" placeholder="1" name="a" inputmode="numeric" pattern="[0-9]*">
-    <input type="number" onClick="this.select();" maxlength="1" max="9" min="0" step="1" placeholder="2" name="b" inputmode="numeric" pattern="[0-9]*">
-    <input type="number" onClick="this.select();" maxlength="1" max="9" min="0" step="1" placeholder="3" name="c" inputmode="numeric" pattern="[0-9]*">
-    <input type="number" onClick="this.select();" maxlength="1" max="9" min="0" step="1" placeholder="4" name="d" inputmode="numeric" pattern="[0-9]*">
-    <br>
-    <input type="submit" name="submit" id="submitBtn">
+    <header style="text-align: center; margin-bottom: 20px;">
+        <h1>Make Ten Calculator</h1>
+        <h2 style="display: none">Solving the Sydney Train Game</h2>
+        <p><span id="results"></span></p>
+    </header>
+    <form method="POST">
+        <input type="number" onClick="this.select();" maxlength="1" max="9" min="0" step="1" placeholder="1" name="a" inputmode="numeric" pattern="[0-9]*" aria-label="First number">
+        <input type="number" onClick="this.select();" maxlength="1" max="9" min="0" step="1" placeholder="2" name="b" inputmode="numeric" pattern="[0-9]*" aria-label="Second number">
+        <input type="number" onClick="this.select();" maxlength="1" max="9" min="0" step="1" placeholder="3" name="c" inputmode="numeric" pattern="[0-9]*" aria-label="Third number">
+        <input type="number" onClick="this.select();" maxlength="1" max="9" min="0" step="1" placeholder="4" name="d" inputmode="numeric" pattern="[0-9]*" aria-label="Fourth number">
+        <br>
+        <input type="submit" name="submit" id="submitBtn" value="Calculate">
+    </form>
 </div>
 </body>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
@@ -181,9 +187,13 @@ function Calculate($ten, $a, $b, $c, $d) {
             var currentInput = $(this);
             var nextInput = currentInput.next('input[type="number"]');
 
-            if (currentInput.val().length === 1 && nextInput.length) {
-                nextInput.focus();
-                nextInput.select();
+            if (currentInput.val().length === 1) {
+                if (nextInput.length) {
+                    nextInput.focus();
+                    nextInput.select();
+                } else {
+                    $('#submitBtn').click(); // Trigger the submit button when the last input is filled
+                }
             }
         });
 
@@ -217,6 +227,15 @@ function Calculate($ten, $a, $b, $c, $d) {
                 success: function (data) {
                     console.log(data);
                     $('#results').html(data);
+
+                    // Set current values as placeholders
+                    $('input[name="a"]').attr('placeholder', a).val('');
+                    $('input[name="b"]').attr('placeholder', b).val('');
+                    $('input[name="c"]').attr('placeholder', c).val('');
+                    $('input[name="d"]').attr('placeholder', d).val('');
+
+                    // Focus back to the first input
+                    $('input[name="a"]').focus();
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     console.error('Error:', errorThrown);
