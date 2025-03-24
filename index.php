@@ -151,11 +151,11 @@ function Calculate($ten, $a, $b, $c, $d) {
 
         input[type="number"]:focus {
             outline: none;
-            border: 2px solid #4285f4;
+            border: 2px solid #f3881f;
         }
 
         input[type="submit"] {
-            background-color: #4285f4;
+            background-color: #1d68b3;
             color: #fff;
             border: none;
             border-radius: 5px;
