@@ -179,7 +179,11 @@ function Calculate($ten, $a, $b, $c, $d) {
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y45HNY4PWK"></script>
 <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
     gtag('js', new Date());
 
     gtag('config', 'G-Y45HNY4PWK');
@@ -257,6 +261,9 @@ function Calculate($ten, $a, $b, $c, $d) {
 
                     // Focus back to the first input
                     $('input[name="a"]').focus();
+                    window.parent.postMessage({
+                        event: 'make10calc',
+                    }, '*');
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     console.error('Error:', errorThrown);
