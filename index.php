@@ -261,9 +261,11 @@ function Calculate($ten, $a, $b, $c, $d) {
 
                     // Focus back to the first input
                     $('input[name="a"]').focus();
-                    window.parent.postMessage({
-                        event: 'make10calc',
-                    }, '*');
+                    if (data !== "There are no possible solutions"){
+                        window.parent.postMessage({
+                            event: 'make10calc',
+                        }, '*');
+                    }
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     console.error('Error:', errorThrown);
