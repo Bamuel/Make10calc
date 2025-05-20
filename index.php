@@ -208,6 +208,19 @@ function Calculate($ten, $a, $b, $c, $d) {
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script>
     $(document).ready(() => {
+        gtag('event', 'page_view', {
+            'page_title': 'Make 10 Calculator',
+            'page_location': window.location.href
+        });
+
+        // Input interaction tracking
+        $('input[type="number"]').on('focus', function() {
+            gtag('event', 'input_focus', {
+                'input_field': $(this).attr('name'),
+                'current_value': $(this).val()
+            });
+        });
+
         $('input[type="number"]').on('input', function () {
             var currentInput = $(this);
             var nextInput = currentInput.next('input[type="number"]');
@@ -253,6 +266,13 @@ function Calculate($ten, $a, $b, $c, $d) {
                     console.log(data);
                     $('#results').html(data);
 
+                    // Track the number combination in GA4
+                    gtag('event', 'calculate', {
+                        'number_combination': `${a},${b},${c},${d}`,
+                        'result_found': data !== "There are no possible solutions",
+                        'solution': data !== "There are no possible solutions" ? data : 'none'
+                    });
+
                     // Set current values as placeholders
                     $('input[name="a"]').attr('placeholder', a).val('');
                     $('input[name="b"]').attr('placeholder', b).val('');
@@ -261,6 +281,8 @@ function Calculate($ten, $a, $b, $c, $d) {
 
                     // Focus back to the first input
                     $('input[name="a"]').focus();
+
+                    // This is for the bamuel.com website
                     if (data !== "There are no possible solutions"){
                         window.parent.postMessage({
                             event: 'make10calc',
@@ -268,6 +290,10 @@ function Calculate($ten, $a, $b, $c, $d) {
                     }
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
+                    gtag('event', 'ajax_error', {
+                        'status': textStatus,
+                        'error': errorThrown
+                    });
                     console.error('Error:', errorThrown);
                 }
             });
